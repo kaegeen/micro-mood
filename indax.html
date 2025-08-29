@@ -1,0 +1,57 @@
+import React, { useState } from "react";
+
+export default function MicroMoodTimeline() {
+  const [moods, setMoods] = useState([]);
+  const [mood, setMood] = useState("");
+
+  const colors = {
+    Happy: "bg-yellow-400",
+    Sad: "bg-blue-400",
+    Angry: "bg-red-400",
+    Calm: "bg-green-400",
+    Anxious: "bg-purple-400"
+  };
+
+  const addMood = () => {
+    if (!mood) return;
+    setMoods([{ mood, time: new Date().toLocaleTimeString() }, ...moods]);
+    setMood("");
+  };
+
+  return (
+    <div className="min-h-screen bg-gray-100 p-6">
+      <h1 className="text-3xl font-bold text-center mb-6">Micro Mood Timeline</h1>
+
+      <div className="flex gap-2 mb-4 justify-center">
+        {Object.keys(colors).map((m) => (
+          <button
+            key={m}
+            onClick={() => setMood(m)}
+            className={`px-3 py-1 rounded text-white ${colors[m]}`}
+          >
+            {m}
+          </button>
+        ))}
+      </div>
+
+      <button
+        onClick={addMood}
+        className="bg-black text-white px-4 py-2 rounded mb-6"
+      >
+        Log Mood
+      </button>
+
+      <div className="flex flex-col-reverse gap-2">
+        {moods.map((m, idx) => (
+          <div
+            key={idx}
+            className={`flex items-center gap-4 p-2 rounded shadow ${colors[m.mood]}`}
+          >
+            <span className="font-bold">{m.mood}</span>
+            <span className="text-sm">{m.time}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
